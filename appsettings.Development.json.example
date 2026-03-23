@@ -1,0 +1,8 @@
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Data Source=kodlabbet.db"
+  },
+  "Jwt": {
+    "Secret": "LÄGG_IN_DIN_LOKALA_NYCKEL_HÄR_MINST_32_TECKEN"
+  }
+}

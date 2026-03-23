@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="sv" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KodLabbet — Lär dig koda med riktiga projekt</title>
+<meta name="description" content="KodLabbet — Lär dig koda med projekt, AI-guidning och dagliga utmaningar. JavaScript, Python, C# och SQL. Ägt av DittFöretag, Malmö.">
+<meta name="keywords" content="lär dig koda, programmering, JavaScript, Python, C#, SQL, AI, nybörjare">
+<meta name="author" content="DittFöretag">
+<meta name="theme-color" content="#6d28d9">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://api.anthropic.com; img-src 'self' data: https:; connect-src 'self' https://api.anthropic.com;">
+<meta property="og:title" content="KodLabbet — Lär dig koda med riktiga projekt">
+<meta property="og:description" content="25 projekt, AI-kodbot och dagliga utmaningar. Gratis att börja.">
+<meta property="og:url" content="https://www.dindomän.com">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="KodLabbet — Lär dig koda med riktiga projekt">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236d28d9'/><text y='.9em' font-size='70' x='12'>💻</text></svg>">
+<link rel="canonical" href="https://www.dindomän.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <!-- Separat CSS-fil -->
+  <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+
+<nav>
+  <div class="logo" onclick="go('home')"><span class="br">{</span>Kod<span class="hl">Labbet</span><span class="br">}</span></div>
+  <ul class="nav-links">
+    <li><a id="nav-home" class="active" onclick="go('home')">Hem</a></li>
+    <li class="nav-drop">
+      <a class="nav-drop-toggle" id="nav-learn-toggle" onclick="toggleNavDrop('learn')">Lär dig ▾</a>
+      <ul class="nav-dropdown" id="nav-drop-learn">
+        <li><a id="nav-projects" onclick="go('projects');closeNavDrops()">📁 Projekt</a></li>
+        <li><a id="nav-paths" onclick="go('paths');closeNavDrops()">🗺️ Lärvägar</a></li>
+        <li><a id="nav-tips" onclick="go('tips');closeNavDrops()">📚 Kunskapsbanken</a></li>
+      </ul>
+    </li>
+    <li class="nav-drop">
+      <a class="nav-drop-toggle" id="nav-train-toggle" onclick="toggleNavDrop('train')">Träna ▾</a>
+      <ul class="nav-dropdown" id="nav-drop-train">
+        <li><a id="nav-daily" onclick="go('daily');closeNavDrops()">🔥 Daglig utmaning</a></li>
+        <li><a id="nav-challenge" onclick="go('challenge');closeNavDrops()">⚔️ Utmaningar</a></li>
+      </ul>
+    </li>
+    <li><a id="nav-dashboard" onclick="go('dashboard')">🏆 Dashboard</a></li>
+    <li><a id="nav-ai" onclick="go('ai')">🤖 KodBot</a></li>
+    <li><a id="nav-pricing" onclick="go('pricing')">Priser <span class="pbadge">PRO</span></a></li>
+</ul>  <button class="nav-ham" id="nav-ham" onclick="toggleMobileNav()" aria-label="Meny">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-r" id="nav-r">
+    <button class="btn-g" onclick="openAuth('login')">Logga in</button>
+    <button class="btn-a" onclick="openAuth('register')">Kom igång</button>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:0.5rem">
+    <button class="theme-btn" id="theme-btn" onclick="toggleTheme()" title="Växla tema">🌙</button>
+    <div class="notif-wrap" id="notif-wrap">
+      <button class="notif-btn" onclick="toggleNotifPanel()" id="nav-notif-btn" title="Notifikationer">🔔<span class="notif-dot" id="notif-dot2" style="display:none"></span></button>
+      <div class="notif-panel" id="notif-panel">
+        <div class="notif-head"><span>Notifikationer</span><button class="notif-clear" onclick="clearNotifs()">Rensa alla</button></div>
+        <div class="notif-list" id="notif-list"></div>
+      </div>
+    </div>
+    <button onclick="go('profile')" id="nav-profile-btn" style="background:none;border:none;cursor:pointer;font-size:1.1rem;padding:0.3rem;color:var(--txt2);display:none" title="Min profil">👤</button>
+  </div>
+</nav>
+
+<div class="nav-mobile" id="nav-mobile">
+  <a id="mnav-home" onclick="goM('home')">🏠 Hem</a>
+  <a id="mnav-profile" onclick="goM('profile')" style="display:none">👤 Min profil</a>
+  <div class="mnav-group-lbl">LÄR DIG</div>
+  <a id="mnav-projects" onclick="goM('projects')">📁 Projekt</a>
+  <a id="mnav-paths" onclick="goM('paths')">🗺️ Lärvägar</a>
+  <a id="mnav-tips" onclick="goM('tips')">📚 Kunskapsbanken</a>
+  <div class="mnav-group-lbl">TRÄNA</div>
+  <a id="mnav-daily" onclick="goM('daily')">🔥 Daglig utmaning</a>
+  <a id="mnav-challenge" onclick="goM('challenge')">⚔️ Utmaningar</a>
+  <div class="mnav-group-lbl">ÖVRIGT</div>
+  <a id="mnav-dashboard" onclick="goM('dashboard')">🏆 Dashboard</a>
+  <a id="mnav-ai" onclick="goM('ai')">🤖 KodBot</a>
+  <a id="mnav-pricing" onclick="goM('pricing')">⭐ Priser</a>
+  <div class="nav-m-divider"></div>
+  <div class="nav-m-btns" id="mnav-btns">
+    <button class="btn-g" style="flex:1" onclick="openAuth('login');closeMobileNav()">Logga in</button>
+    <button class="btn-a" style="flex:1" onclick="openAuth('register');closeMobileNav()">Kom igång</button>
+  </div>
+</div>
+
+<div class="live-ticker" id="live-ticker">
+  <div class="lt-track" id="lt-track">
+    <!-- populated by JS -->
+  </div>
+</div>
+<main>
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div class="eye"><span class="pdot"></span>Lär dig koda med projekt + AI</div>
+    <h1 class="hero-h">Koda.<br><span class="gt">Bygg. Förstå.</span></h1>
+    <p class="hero-sub">Lär dig <span id="typing-lang" style="color:var(--acc2);font-weight:700"></span><span class="typing-cursor"></span> med projekt, AI-guidning och dagliga kodutmaningar.</p>
+    <div class="hero-cta">
+      <button class="btn-hp" onclick="go('projects')">Utforska projekt →</button>
+      <button class="btn-hs" onclick="go('pricing')">✨ Se Pro-planen</button>
+    </div>
+
+    <div class="hero-features">
+      <div class="hf-item"><div class="hf-ico">📁</div>25 projekt</div>
+      <div class="hf-item"><div class="hf-ico">🤖</div>AI-guidning</div>
+      <div class="hf-item"><div class="hf-ico">🔥</div>Dagliga utmaningar</div>
+      <div class="hf-item"><div class="hf-ico">⚔️</div>PvP-arena</div>
+      <div class="hf-item"><div class="hf-ico">🏆</div>XP & badges</div>
+    </div>
+    <div class="term">
+      <div class="tbar"><span class="td r"></span><span class="td y"></span><span class="td g"></span><span class="ttl">KodLabbet — program.cs</span></div>
+      <div class="tbody">
+        <div><span class="tcm">// Välj språk: C# | JavaScript | Python | SQL</span></div>
+        <div>&nbsp;</div>
+        <div><span class="tkw">using</span> <span class="ttype">System</span>;</div>
+        <div><span class="tkw">namespace</span> <span class="tfn">MittProjekt</span> {</div>
+        <div>&nbsp;&nbsp;<span class="tkw">class</span> <span class="ttype">Program</span> {</div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="tkw">static void</span> <span class="tfn">Main</span>() {</div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tfn">Console</span>.<span class="tfn">WriteLine</span>(<span class="tstr">"Hej, KodLabbet! 🚀"</span>);</div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tcm">// Ditt lärande börjar här...</span><span class="tcur"></span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;}&nbsp;}</div>
+      </div>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="sc"><div class="n">25</div><div class="l">Projekt</div></div>
+    <div class="sc"><div class="n">4</div><div class="l">Språk (JS/Py/C#/SQL)</div></div>
+    <div class="sc"><div class="n">∞</div><div class="l">AI-frågor (Pro)</div></div>
+    <div class="sc"><div class="n">100%</div><div class="l">Gratis att starta</div></div>
+  </div>
+
+
+<!-- SOCIAL PROOF -->
+<section class="sp-section">
+  <div class="sp-inner">
+    <div class="sp-head">
+      <span class="stag">// vad användarna säger</span>
+      <h2>Riktiga studenter. Riktiga resultat.</h2>
+      <p>Mer än 2 400 kodare har redan börjat sin resa med KodLabbet.</p>
+    </div>
+    <!-- SUMMARY + ACTION ROW -->
+    <div class="sp-summary" id="sp-summary"></div>
+    <div class="sp-action-row">
+      <div class="sp-filter-tabs" id="sp-filter-tabs">
+        <button class="sp-tab active" onclick="spFilter('all',this)">Alla</button>
+        <button class="sp-tab" onclick="spFilter(5,this)">⭐⭐⭐⭐⭐</button>
+        <button class="sp-tab" onclick="spFilter(4,this)">⭐⭐⭐⭐</button>
+        <button class="sp-tab" onclick="spFilter(3,this)">⭐⭐⭐</button>
+      </div>
+      <button class="sp-write-btn" onclick="openReviewModal()">✍️ Skriv en recension</button>
+    </div>
+    <div class="sp-grid" id="sp-grid"></div>
+    <!-- COUNTERS -->
+    <div class="sp-counters">
+      <div><div class="sp-cnt-val" id="cnt-users">2 418</div><div class="sp-cnt-lbl">Registrerade kodare</div></div>
+      <div><div class="sp-cnt-val" id="cnt-proj">8 302</div><div class="sp-cnt-lbl">Projekt slutförda</div></div>
+      <div><div class="sp-cnt-val" id="cnt-streak">147</div><div class="sp-cnt-lbl">Aktiva streaks idag</div></div>
+      <div><div class="sp-cnt-val" id="cnt-ai">41 209</div><div class="sp-cnt-lbl">KodBot-frågor besvarade</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FREE TRIAL -->
+<div style="padding:0 1.5rem">
+  <div class="freetrial-bar">
+    <div class="ft-left">
+      <h3>🎁 Prova Pro gratis — inget kreditkort krävs</h3>
+      <p>Lås upp ett valfritt Pro-projekt helt gratis och upplev vad Pro-planen har att erbjuda. Ingen bindningstid, inga dolda avgifter.</p>
+      <div class="ft-perks">
+        <span class="ft-perk">✅ Omedelbar åtkomst</span>
+        <span class="ft-perk">✅ Inget kreditkort</span>
+        <span class="ft-perk">✅ Behåll framstegen</span>
+        <span class="ft-perk">⏱ <span id="ft-countdown-lbl">Erbjudandet gäller i 23:47:12</span></span>
+      </div>
+    </div>
+    <div class="ft-right">
+      <button class="ft-cta" onclick="startFreeTrial()">Starta gratis provperiod →</button>
+      <span class="ft-note">Sedan 89 kr/mån — avbryt när som helst</span>
+    </div>
+  </div>
+</div>
+
+<!-- SHARE / REFERRAL -->
+<div style="padding:0 1.5rem 4rem">
+  <div class="share-section">
+    <div class="share-left">
+      <h3>🎁 Bjud in en vän — båda får 1 månads Pro gratis</h3>
+      <p>Dela din unika länk. När en vän registrerar sig via den får ni båda 30 dagars Pro-access utan kostnad.</p>
+      <div class="share-btns">
+        <button class="share-btn sb-linkedin" onclick="shareToLinkedIn()">💼 LinkedIn</button>
+        <button class="share-btn sb-x" onclick="shareToX()">𝕏 X / Twitter</button>
+        <button class="share-btn sb-copy" onclick="copyShareLink()">🔗 Kopiera länk</button>
+      </div>
+    </div>
+    <div class="share-ref">
+      <div>
+        <div class="share-ref-lbl">Din referenskod</div>
+        <div class="share-ref-code" id="ref-code">KL-????</div>
+      </div>
+      <button class="share-ref-copy" onclick="copyRefCode()">Kopiera</button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- PROJECTS -->
+<div id="page-projects" class="page">
+  <div class="sec-head"><span class="stag">// projekt</span><h2>Välj ditt nästa projekt</h2><p>Bygg riktiga grejer. Anpassa varje projekt till ditt språk, ramverk och terminal.</p></div>
+  <div class="pw">
+    <div class="proj-search-row">
+      <div class="proj-search-wrap">
+        <span class="search-ico">🔍</span>
+        <input class="proj-search-input" id="proj-search" type="text" placeholder="Sök projekt... (t.ex. 'snake', 'api', 'sql')" oninput="projSearch()" autocomplete="off">
+        <button class="proj-search-clear" id="proj-search-clear" onclick="clearProjSearch()">✕</button>
+      </div>
+      <select class="proj-sort-sel" id="proj-sort" onchange="projSearch()">
+        <option value="default">Sortera: Standard</option>
+        <option value="az">A–Ö</option>
+        <option value="easy">Lättast först</option>
+        <option value="hard">Svårast först</option>
+        <option value="quick">Kortast tid</option>
+      </select>
+    </div>
+    <div class="proj-results-lbl" id="proj-results-lbl"></div>
+    <div class="cbar">
+      <span class="clbl">Anpassa:</span>
+      <div class="cgrp"><span class="clbl">Språk</span>
+        <select class="csel" id="ls" onchange="applyC()">
+          <option value="javascript">JavaScript</option><option value="python">Python</option>
+          <option value="csharp">C#</option><option value="typescript">TypeScript</option>
+        </select>
+      </div>
+      <div class="csep"></div>
+      <div class="cgrp"><span class="clbl">Ramverk</span>
+        <select class="csel" id="fs" onchange="applyC()">
+          <option value="none">Vanilla</option><option value="react">React</option>
+          <option value="nextjs">Next.js</option><option value="aspnet">ASP.NET</option>
+          <option value="flask">Flask</option><option value="django">Django</option>
+          <option value="nodejs">Node.js</option><option value="vue">Vue.js</option>
+        </select>
+      </div>
+      <div class="csep"></div>
+      <div class="cgrp"><span class="clbl">Terminal</span>
+        <select class="csel" id="ts" onchange="applyC()">
+          <option value="bash">Bash/Zsh</option><option value="powershell">PowerShell</option>
+          <option value="cmd">Windows CMD</option><option value="fish">Fish</option>
+        </select>
+      </div>
+    </div>
+    <div class="frow">
+      <span class="flbl">Nivå:</span>
+      <button class="chip active" onclick="sf('lv','all',this)">Alla</button>
+      <button class="chip" onclick="sf('lv','beginner',this)">🟢 Nybörjare</button>
+      <button class="chip" onclick="sf('lv','medium',this)">🟡 Medel</button>
+      <button class="chip" onclick="sf('lv','advanced',this)">🔴 Avancerad</button>
+    </div>
+    <div class="frow">
+      <span class="flbl">Kategori:</span>
+      <button class="chip active" onclick="sf('ct','all',this)">Alla</button>
+      <button class="chip" onclick="sf('ct','loopar',this)">🔁 Loopar</button>
+      <button class="chip" onclick="sf('ct','strängar',this)">📝 Strängar</button>
+      <button class="chip" onclick="sf('ct','klasser',this)">📦 Klasser</button>
+      <button class="chip" onclick="sf('ct','api',this)">🌐 API</button>
+      <button class="chip pro" onclick="rp('SQL-projekt')">🗄️ SQL ✦</button>
+      <button class="chip pro" onclick="rp('MongoDB-projekt')">🍃 MongoDB ✦</button>
+      <button class="chip pro" onclick="rp('Algoritmer')">⚡ Algoritmer ✦</button>
+      <button class="chip pro" onclick="rp('Designmönster')">🏗️ Designmönster ✦</button>
+      <button class="chip pro" onclick="rp('Asynkron programmering')">⏳ Asynkron ✦</button>
+    </div>
+    <div class="frow">
+      <span class="flbl">Språk:</span>
+      <button class="chip active" onclick="sf('lg','all',this)">Alla</button>
+      <button class="chip" onclick="sf('lg','javascript',this)">JS</button>
+      <button class="chip" onclick="sf('lg','python',this)">Python</button>
+      <button class="chip" onclick="sf('lg','csharp',this)">C#</button>
+      <button class="chip" onclick="sf('lg','sql',this)">SQL</button>
+    </div>
+    <div class="pgrid" id="pgrid"><div class="ldph"><div class="spin"></div><br>Laddar projekt...</div></div>
+  </div>
+</div>
+
+<!-- TIPS -->
+<div id="page-tips" class="page">
+  <div class="sec-head">
+    <span class="stag">// kunskapsbanken</span>
+    <h2>📚 Kunskapsbanken</h2>
+    <p>Kodreferenser, AI-verktyg, kravställning och de senaste nyheterna inom tech — allt på ett ställe.</p>
+  </div>
+  <div class="kbwrap">
+    <!-- SEARCH BAR -->
+    <div class="kb-search-row">
+      <div class="kb-search-wrap">
+        <span class="kb-search-icon">🔍</span>
+        <input class="kb-search-inp" id="kb-search" type="text" placeholder="Sök efter klasser, SQL, AI, kravställning..." oninput="kbSearch()">
+        <button class="kb-clear" id="kb-clear" onclick="kbClearSearch()" style="display:none">✕</button>
+      </div>
+    </div>
+    <!-- CATEGORY TABS -->
+    <div class="kb-cattabs" id="kb-cattabs">
+      <button class="kb-ctab active" onclick="kbSetCat('all',this)">🌐 Alla</button>
+      <button class="kb-ctab" onclick="kbSetCat('kod',this)">💻 Kod</button>
+      <button class="kb-ctab" onclick="kbSetCat('ai',this)">🤖 AI-verktyg</button>
+      <button class="kb-ctab" onclick="kbSetCat('krav',this)">📋 Kravställning</button>
+      <button class="kb-ctab" onclick="kbSetCat('nyheter',this)">📡 AI-nyheter</button>
+    </div>
+    <!-- TAG FILTERS -->
+    <div class="kb-tagrow" id="kb-tagrow">
+      <span class="kb-taglbl">Filtrera:</span>
+      <div class="kb-tags" id="kb-tags">
+        <!-- populated by JS -->
+      </div>
+    </div>
+    <!-- CONTENT -->
+    <div class="kb-grid" id="kb-grid">
+      <div class="ldph"><div class="spin"></div><br>Laddar kunskapsbanken...</div>
+    </div>
+    <!-- AI NEWS TICKER -->
+    <div class="kb-ticker" id="kb-ticker">
+      <span class="kb-ticker-lbl">📡 LIVE AI-NYHETER:</span>
+      <div class="kb-ticker-track" id="kb-ticker-track">Laddar senaste AI-nyheter...</div>
+    </div>
+  </div>
+</div>
+
+<!-- AI -->
+<div id="page-ai" class="page">
+  <div class="ail">
+    <div class="aih">
+      <div class="aiav">🤖</div>
+      <div><div class="aitt">KodBot</div><div class="aisb">Din personliga AI-kodningsassistent</div></div>
+      <div class="aists"><div class="gd"></div>Online</div>
+    </div>
+    <div class="ailim" id="ailim">
+      <p>⚡ Gratis: 5 AI-meddelanden/dag. Uppgradera till Pro!</p>
+      <button onclick="go('pricing')">Uppgradera →</button>
+    </div>
+    <div class="cmsg-area" id="cmsg-area">
+      <div class="cw"><div class="cwb">👋</div><h3>Hej! Jag är KodBot!</h3><p>Fråga om kod, klistra in kod med fel,<br>eller välj ett ämne nedan.</p></div>
+    </div>
+    <div class="tyr" id="tyr">
+      <div class="mav" style="background:linear-gradient(135deg,var(--acc),var(--acc2))">🤖</div>
+      <div class="tyb"><div class="tyd"></div><div class="tyd"></div><div class="tyd"></div></div>
+    </div>
+    <div class="qch">
+      <button class="qc" onclick="qs('Vad är en klass i C# och hur skapar man en?')">🏗️ Klasser i C#</button>
+      <button class="qc" onclick="qs('Förklara async/await med ett JavaScript-exempel')">⚡ Async/Await</button>
+      <button class="qc" onclick="qs('Skillnaden mellan SQL och MongoDB?')">🗄️ SQL vs MongoDB</button>
+      <button class="qc" onclick="qs('Hur fungerar for-loopar i Python?')">🔁 Python-loopar</button>
+      <button class="qc" onclick="qs('Enkelt nybörjarprojekt i C#')">🚀 C#-projekt</button>
+      <button class="qc" onclick="qs('Förklara LINQ i C# med kodexempel')">🔍 LINQ</button>
+    </div>
+    <div class="cinr">
+      <div class="ciw">
+        <textarea id="ci" rows="1" placeholder="Fråga om kod, klistra in ett fel..."
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAI()}"
+          oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+      </div>
+      <button class="sbt" onclick="sendAI()" id="sbt">➤</button>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<div id="page-pricing" class="page">
+  <div class="sec-head"><span class="stag">// priser</span><h2>Enkel prissättning</h2><p>Börja gratis. Uppgradera när du är redo.</p></div>
+  <div class="pricew">
+    <div class="btog">
+      <span class="tl">Månadsvis</span>
+      <div class="tt" id="btg" onclick="togB()"><div class="tth"></div></div>
+      <span class="tl">Årsvis</span>
+      <span class="sb">Spara 40%</span>
+    </div>
+    <div class="plg">
+      <div class="plan">
+        <div class="plni">🌱</div><div class="plnn">Gratis</div><div class="plnt">Kom igång utan kostnad</div>
+        <div class="plnp"><span class="cur">kr</span><span class="amt">0</span><span class="per">/mån</span></div>
+        <ul class="plnf">
+          <li class="inc"><span class="fi">✅</span>6 projekt (nybörjare)</li>
+          <li class="inc"><span class="fi">✅</span>Alla tips &amp; tricks</li>
+          <li class="inc"><span class="fi">✅</span>5 AI-frågor per dag</li>
+          <li class="inc"><span class="fi">✅</span>JavaScript + Python</li>
+          <li class="exc"><span class="fi">🔒</span>C# &amp; TypeScript-projekt</li>
+          <li class="exc"><span class="fi">🔒</span>SQL / MongoDB-projekt</li>
+          <li class="exc"><span class="fi">🔒</span>Avancerade filter</li>
+          <li class="exc"><span class="fi">🔒</span>Obegränsad AI-chatt</li>
+        </ul>
+        <button class="plnbtn pfr" onclick="openAuth('register')">Skapa gratiskonto</button>
+      </div>
+      <div class="plan pop">
+        <div class="prib">POPULÄRAST ⭐</div>
+        <div class="plni">⚡</div><div class="plnn">Pro</div><div class="plnt">För den seriöse kodaren</div>
+        <div class="plnp"><span class="cur">kr</span><span class="amt" id="pamt">99</span><span class="per">/mån</span><div class="yr" id="pyr">Faktureras kr 599/år — spara kr 589</div></div>
+        <ul class="plnf">
+          <li class="inc"><span class="fi">✅</span>Alla 25 projekt</li>
+          <li class="inc"><span class="fi">✅</span>C#, SQL, MongoDB-projekt</li>
+          <li class="inc"><span class="fi">✅</span><strong>Obegränsad AI-chatt</strong></li>
+          <li class="inc"><span class="fi">✅</span>Alla avancerade filter</li>
+          <li class="inc"><span class="fi">✅</span>AI anpassad till ditt ramverk</li>
+          <li class="inc"><span class="fi">✅</span>Sparad chatthistorik</li>
+          <li class="inc"><span class="fi">✅</span>Algoritmer &amp; designmönster</li>
+          <li class="inc"><span class="fi">✅</span>XP-leaderboard</li>
+        </ul>
+        <button class="plnbtn ppr" onclick="subPro()">Starta Pro — 7 dagar gratis</button>
+      </div>
+      <div class="plan ent">
+        <div class="plni">🏢</div><div class="plnn">Enterprise</div><div class="plnt">För team och företag</div>
+        <div class="plnp"><span class="cur">kr</span><span class="amt">499</span><span class="per">/mån per team</span></div>
+        <ul class="plnf">
+          <li class="inc"><span class="fi">✅</span>Allt i Pro</li>
+          <li class="inc"><span class="fi">✅</span>Upp till 20 användare</li>
+          <li class="inc"><span class="fi">✅</span>Team-dashboard &amp; statistik</li>
+          <li class="inc"><span class="fi">✅</span>Anpassade projekt för ert stack</li>
+          <li class="inc"><span class="fi">✅</span>SSO-integration</li>
+          <li class="inc"><span class="fi">✅</span>Faktura-betalning</li>
+        </ul>
+        <button class="plnbtn pen" onclick="toast('Kontakta hej@www.dindomän.com','info')">Kontakta oss →</button>
+      </div>
+    </div>
+    <h3 style="font-size:1.2rem;font-weight:800;margin-bottom:1rem;text-align:center">Detaljerad jämförelse</h3>
+    <div class="ftw">
+      <table class="ft">
+        <thead><tr><th>Funktion</th><th>Gratis</th><th style="color:var(--gold)">Pro</th><th style="color:var(--acc2)">Enterprise</th></tr></thead>
+        <tbody>
+          <tr><td class="ftn">Antal projekt</td><td>6</td><td>25+</td><td>Obegränsad</td></tr>
+          <tr><td class="ftn">AI-frågor/dag</td><td>5</td><td class="ftck">∞</td><td class="ftck">∞</td></tr>
+          <tr><td class="ftn">C#-projekt</td><td class="ftcr">✗</td><td class="ftck">✓</td><td class="ftck">✓</td></tr>
+          <tr><td class="ftn">SQL &amp; MongoDB</td><td class="ftcr">✗</td><td class="ftck">✓</td><td class="ftck">✓</td></tr>
+          <tr><td class="ftn">Avancerade filter</td><td class="ftcr">✗</td><td class="ftck">✓</td><td class="ftck">✓</td></tr>
+          <tr><td class="ftn">AI anpassad till ramverk</td><td class="ftcr">✗</td><td class="ftck">✓</td><td class="ftck">✓</td></tr>
+          <tr><td class="ftn">Sparad chatthistorik</td><td class="ftcr">✗</td><td class="ftck">✓</td><td class="ftck">✓</td></tr>
+          <tr><td class="ftn">Team-funktioner</td><td class="ftcr">✗</td><td class="ftcr">✗</td><td class="ftck">✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+  <!-- FAQ -->
+  <div class="faq-section">
+    <h2>❓ Vanliga frågor</h2>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Kan jag avbryta när som helst? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Ja, du kan avbryta din Pro-prenumeration när som helst utan bindningstid. Du behåller tillgången fram till perioden slutar.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Är gratisplanen verkligen gratis för alltid? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Absolut. Gratisplanen är gratis för alltid — inga kreditkortskrav. Du får tillgång till alla gratisprojekt, dagliga utmaningar och KodBot (begränsad).</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Vad händer om jag uppgraderar mitt konto? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Direkt vid uppgradering låser du upp alla 25+ projekt, obegränsad KodBot, Pro-utmaningar och prioriterad support. Din progress sparas alltid.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Passar KodLabbet mig som nybörjare? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Ja! Många projekt är byggda specifikt för nybörjare med steg-för-steg-guider och startkod. KodBot hjälper dig när du kör fast.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Vilka programmeringsspråk stöds? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">JavaScript, Python och C# är primärspråken. Projekten innehåller ofta startkod i alla tre språk så du kan välja det du föredrar eller lär dig.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Hur kontaktar jag support? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Mejla oss på <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="573a3825241615171e237934383a">[email&#160;protected]</a></strong> så svarar vi inom 24 timmar. Pro-användare får prioriterad support.</div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<div id="page-challenge" class="page">
+  <div class="sec-head">
+    <span class="stag">// utmaningar</span>
+    <h2>⚔️ Kodarenas</h2>
+    <p>Utmana vänner och okända kodare i realtid. Lös problem snabbast och vinn XP.</p>
+  </div>
+  <div class="chal-wrap">
+    <div class="chal-hero">
+      <h2>Redo att koda mot varandra? ⚔️</h2>
+      <p>Skapa en privat utmaning och bjud in en vän, eller hoppa in i en öppen arena och möt slumpmässiga motståndare.</p>
+      <div class="chal-hero-btns">
+        <button class="btn-cc" onclick="openCreateChallenge()">+ Skapa utmaning</button>
+        <button class="btn-qj" onclick="quickJoin()">⚡ Snabbmatch</button>
+      </div>
+    </div>
+    <div class="ctabs">
+      <button class="ctab active" onclick="setCTab('open',this)">🌐 Öppna arenor</button>
+      <button class="ctab" onclick="setCTab('mine',this)">👤 Mina utmaningar</button>
+      <button class="ctab" onclick="setCTab('leaderboard',this)">🏆 Topplista</button>
+      <button class="ctab" onclick="setCTab('history',this)">📜 Historik</button>
+    </div>
+    <div id="chal-content"></div>
+  </div>
+</div>
+
+
+<!-- LÄRVÄGAR -->
+<div id="page-paths" class="page">
+  <div class="sec-head">
+    <span class="stag">// lärvägar</span>
+    <h2>🗺️ Lärvägar</h2>
+    <p>Strukturerade spår från nybörjare till anställningsbar. Följ en väg — eller bygg din egen.</p>
+  </div>
+  <div class="paths-wrap">
+    <div class="paths-grid" id="paths-grid">
+      <div class="ldph"><div class="spin"></div><br>Laddar lärvägar...</div>
+    </div>
+  </div>
+</div>
+
+<!-- PATH DETAIL -->
+<div class="path-detail-ov" id="path-ov" onclick="closePathDetail(event)">
+  <div class="path-detail-box" id="path-detail-box">
+    <div id="path-detail-content"></div>
+  </div>
+</div>
+
+<!-- DAILY CHALLENGE -->
+<div id="page-daily" class="page">
+  <div class="sec-head">
+    <span class="stag">// daglig utmaning</span>
+    <h2>🔥 Dagens utmaning</h2>
+    <p>En ny koduppgift varje dag. Bygg din streak och tjäna bonus-XP!</p>
+  </div>
+  <div class="daily-wrap">
+    <!-- STREAK BAR -->
+    <div class="streak-bar" id="streak-bar">
+      <div class="streak-days" id="streak-days"></div>
+      <div class="streak-stats">
+        <div class="streak-stat">
+          <div class="ss-val" id="ss-streak">0</div>
+          <div class="ss-lbl">🔥 Streak</div>
+        </div>
+        <div class="streak-stat">
+          <div class="ss-val" id="ss-best">0</div>
+          <div class="ss-lbl">🏅 Bäst</div>
+        </div>
+        <div class="streak-stat">
+          <div class="ss-val" id="ss-total">0</div>
+          <div class="ss-lbl">✅ Totalt</div>
+        </div>
+        <div class="streak-stat">
+          <div class="ss-val xp-val" id="ss-xp">0</div>
+          <div class="ss-lbl">⚡ XP idag</div>
+        </div>
+      </div>
+    </div>
+    <!-- TODAY'S CHALLENGE -->
+    <div class="daily-main" id="daily-main"></div>
+    <!-- CALENDAR -->
+    <div class="daily-cal-wrap">
+      <div class="daily-cal-head">
+        <span class="stag" style="letter-spacing:2px">AKTIVITETSKALENDER</span>
+        <span id="cal-month-lbl" style="font-family:var(--mono);font-size:0.78rem;color:var(--txt2)"></span>
+      </div>
+      <div class="daily-cal" id="daily-cal"></div>
+    </div>
+    <!-- PAST CHALLENGES -->
+    <div class="daily-past-head">
+      <span class="stag" style="letter-spacing:2px">TIDIGARE UTMANINGAR</span>
+    </div>
+    <div class="daily-past" id="daily-past"></div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="page-dashboard" class="page">
+  <div class="sec-head">
+    <span class="stag">// dashboard</span>
+    <h2 id="db-greeting">🏆 Min progress</h2>
+    <p>Din kodningsresa i siffror, badges och milstolpar.</p>
+  </div>
+  <div class="db-wrap">
+    <!-- STATS ROW -->
+    <div class="db-stats" id="db-stats"></div>
+    <!-- XP PROGRESS BAR -->
+    <div class="db-xp-card" id="db-xp-card"></div>
+    <!-- TWO COLUMNS: BADGES + ACTIVITY -->
+    <div class="db-cols">
+      <div class="db-col">
+        <div class="db-section-head">🎖️ Badges</div>
+        <div class="db-badges" id="db-badges"></div>
+      </div>
+      <div class="db-col">
+        <div class="db-section-head">📈 Aktivitet (30 dagar)</div>
+        <div class="db-activity" id="db-activity"></div>
+      </div>
+    </div>
+    <!-- COMPLETED PROJECTS -->
+    <div class="db-section-head" style="margin-top:2rem">✅ Slutförda projekt</div>
+    <div class="db-projects" id="db-projects"></div>
+    <!-- LEADERBOARD TEASER -->
+    <div class="db-lb-teaser" id="db-lb-teaser"></div>
+  </div>
+</div>
+
+</main>
+
+<!-- MODALS -->
+<div class="ov" id="pmov" onclick="closePM(event)">
+  <div class="mbox"><div class="mtb"></div><button class="mcl" onclick="closePM()">✕</button><div id="pmb"></div></div>
+</div>
+<div class="ov" id="auth-ov" onclick="closeA(event)">
+  <div class="abox">
+    <button class="acl" onclick="closeA()">✕</button>
+    <div class="alogo">⚡</div>
+    <h2 id="ah2">Logga in</h2><p class="asub" id="asub">Välkommen tillbaka!</p>
+    <div class="aerr" id="aerr"></div>
+    <div class="fld" id="f-un" style="display:none"><label>Användarnamn</label><input type="text" id="i-un" placeholder="kodare123"></div>
+    <div class="fld"><label>E-post</label><input type="email" id="i-em" placeholder="du@exempel.se"></div>
+    <div class="fld"><label>Lösenord</label><input type="password" id="i-pw" placeholder="Minst 8 tecken"></div>
+    <button class="bfull" id="a-sb" onclick="doAuth()">Logga in</button>
+    <div id="a-forgot" style="text-align:center;margin-top:0.5rem"><a onclick="forgotPassword()" style="font-family:var(--mono);font-size:0.72rem;color:var(--txt3);cursor:pointer;text-decoration:underline;text-underline-offset:3px">Glömt lösenord?</a></div>
+    <div class="asw" id="a-sw">Inget konto? <a onclick="swA('register')">Skapa ett gratis</a></div>
+  </div>
+</div>
+<div class="ov" id="up-ov" onclick="closeUp(event)">
+  <div class="upbox">
+    <button class="acl" onclick="closeUp()">✕</button>
+    <div style="font-size:2.6rem;margin-bottom:0.8rem">🔒</div>
+    <h2 style="font-size:1.4rem;font-weight:800;margin-bottom:0.22rem">Pro-funktion</h2>
+    <p style="color:var(--txt2);font-size:0.82rem;font-family:var(--mono);margin-bottom:0.45rem" id="up-msg">Kräver Pro-konto.</p>
+    <div class="upf">
+      <div style="font-family:var(--mono);font-size:0.7rem;color:var(--txt3);letter-spacing:1px;text-transform:uppercase;margin-bottom:0.6rem">Pro inkluderar:</div>
+      <ul><li>✅ Alla 25 projekt (C#, SQL, MongoDB...)</li><li>✅ Obegränsad AI-chatt</li><li>✅ Avancerade kategorifilter</li><li>✅ AI anpassad till ditt ramverk</li></ul>
+    </div>
+    <button class="bfull" style="background:linear-gradient(135deg,var(--gold),#ef4444);color:#000" onclick="closeUp();go('pricing')">Se Pro-planen →</button>
+    <div style="margin-top:0.62rem;font-size:0.74rem;color:var(--txt3);font-family:var(--mono)">7 dagar gratis. Avbryt när som helst.</div>
+  </div>
+</div>
+
+<div class="ov" id="arena-ov" onclick="closeArena(event)">
+  <div class="arena-mbox" id="arena-mbox">
+    <button class="mcl" onclick="closeArena()" style="z-index:10;position:absolute;top:0.8rem;right:0.8rem">✕</button>
+    <div id="arena-content" style="display:flex;flex-direction:column;height:100%"></div>
+  </div>
+</div>
+<div class="ov" id="create-ov" onclick="closeCreateChal(event)">
+  <div class="abox" style="max-width:500px">
+    <button class="acl" onclick="closeCreateChal()">✕</button>
+    <div class="alogo">⚔️</div>
+    <h2 style="text-align:center;font-size:1.35rem;font-weight:800;margin-bottom:0.2rem">Skapa utmaning</h2>
+    <p class="asub">Välj problem, bjud in och starta.</p>
+    <div style="margin-top:0.9rem">
+      <label class="cflbl">Utmaningsnamn</label>
+      <input class="cfinp" id="chal-name" placeholder="ex. Fredag-battle med Anton">
+      <div class="cfg2">
+        <div>
+          <label class="cflbl">Svårighetsgrad</label>
+          <select class="cfsel" id="chal-diff">
+            <option value="easy">🟢 Lätt</option>
+            <option value="medium" selected>🟡 Medel</option>
+            <option value="hard">🔴 Svår</option>
+          </select>
+        </div>
+        <div>
+          <label class="cflbl">Tidsgräns</label>
+          <select class="cfsel" id="chal-time">
+            <option value="10">10 minuter</option>
+            <option value="20" selected>20 minuter</option>
+            <option value="30">30 minuter</option>
+            <option value="60">60 minuter</option>
+          </select>
+        </div>
+      </div>
+      <label class="cflbl">Språk</label>
+      <select class="cfsel" id="chal-lang">
+        <option value="any" selected>Valfritt (spelaren väljer)</option>
+        <option value="javascript">JavaScript</option>
+        <option value="python">Python</option>
+        <option value="csharp">C#</option>
+      </select>
+      <label class="cflbl">Spelläge</label>
+      <div class="modebtns">
+        <div class="modebtn sel" id="mode-1v1" onclick="selMode('1v1')">⚔️ 1 vs 1</div>
+        <div class="modebtn" id="mode-group" onclick="selMode('group')">👥 Grupp</div>
+        <div class="modebtn" id="mode-open" onclick="selMode('open')">🌐 Öppen</div>
+      </div>
+      <div id="invite-sec">
+        <label class="cflbl">Bjud in spelare</label>
+        <div style="display:flex;gap:0.45rem">
+          <input class="cfinp" id="inv-inp" placeholder="Användarnamn" style="margin:0;flex:1" onkeydown="if(event.key==='Enter')addInv()">
+          <button onclick="addInv()" class="btn-a" style="padding:0 0.85rem;font-size:0.8rem;white-space:nowrap">+ Lägg till</button>
+        </div>
+        <div id="inv-tags" style="margin-top:0.45rem;display:flex;flex-wrap:wrap"></div>
+      </div>
+    </div>
+    <button class="bfull" style="margin-top:1rem" onclick="createChallenge()">Skapa utmaning →</button>
+  </div>
+</div>
+
+<div class="tstack" id="tstack"></div><!-- ONBOARDING MODAL -->
+<div class="ob-ov" id="ob-ov">
+  <div class="ob-box">
+    <div class="ob-prog"><div class="ob-prog-fill" id="ob-prog-fill" style="width:25%"></div></div>
+    <div class="ob-body" id="ob-body"></div>
+    <div class="ob-foot">
+      <button class="ob-skip" onclick="skipOnboarding()">Hoppa över</button>
+      <div class="ob-dots" id="ob-dots"></div>
+      <button class="ob-next" id="ob-next" onclick="obNext()">Nästa →</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- SCROLL TO TOP -->
+<button class="scroll-top-btn" id="scroll-top-btn" onclick="scrollToTop()" title="Tillbaka till toppen">↑</button>
+
+<!-- COOKIE BANNER -->
+<div class="cookie-banner" id="cookie-banner">
+  <div class="cookie-txt">
+    🍪 Vi använder cookies för att förbättra din upplevelse och analysera trafik. Läs vår <a onclick="toast('Kontakta oss: kontakt@dindomän.com','info')">integritetspolicy</a>.
+  </div>
+  <div class="cookie-btns">
+    <button class="cookie-accept" onclick="acceptCookies()">Acceptera alla</button>
+    <button class="cookie-settings" onclick="toast('Cookie-inställningar kommer snart!','info')">Anpassa</button>
+    <button class="cookie-reject" onclick="rejectCookies()">Avvisa</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo" onclick="go('home')"><span class="br">{</span>Kod<span class="hl">Labbet</span><span class="br">}</span></div>
+        <p>KodLabbet är ett sidoprojekt av <strong style="color:var(--txt)">DittFöretag</strong> — en student i Malmö som tycker det är kul att hitta på och bygga nya grejer. Det här är ett av dem.<br><span style="color:var(--acc2)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="82efedf0f1c3c0c2cbf6ace1edef">[email&#160;protected]</a></span> · Malmö, Sverige · 2026</p>
+        <div class="footer-social">
+          <a class="fsoc-btn" onclick="shareToLinkedIn()" title="LinkedIn">💼</a>
+          <a class="fsoc-btn" onclick="shareToX()" title="X / Twitter">𝕏</a>
+          <a class="fsoc-btn" onclick="toast('Discord kommer snart!','info')" title="Discord">🎮</a>
+          <a class="fsoc-btn" onclick="toast('GitHub kommer snart!','info')" title="GitHub">🐙</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Lär dig</h4>
+        <ul>
+          <li><a onclick="go('projects')">📁 Projekt</a></li>
+          <li><a onclick="go('paths')">🗺️ Lärvägar</a></li>
+          <li><a onclick="go('tips')">📚 Kunskapsbanken</a></li>
+          <li><a onclick="go('ai')">🤖 KodBot</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Träna</h4>
+        <ul>
+          <li><a onclick="go('daily')">🔥 Daglig utmaning</a></li>
+          <li><a onclick="go('challenge')">⚔️ Utmaningar</a></li>
+          <li><a onclick="go('dashboard')">🏆 Dashboard</a></li>
+          <li><a onclick="go('pricing')">👑 Pro-planen</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Info</h4>
+        <ul>
+          <li><a onclick="toast('DittFöretag — grundare av KodLabbet','info')">🏢 Om DittFöretag</a></li>
+          <li><a onclick="toast('Blogg kommer snart!','info')">✍️ Blogg</a></li>
+          <li><a onclick="toast('Kontakta oss: kontakt@dindomän.com','info')">🔒 Integritetspolicy</a></li>
+          <li><a onclick="window.location='mailto:kontakt@dindomän.com'">📧 <span class="__cf_email__" data-cfemail="b3dedcc1c0f2f1f3fac79dd0dcde">[email&#160;protected]</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 DittFöretag · Malmö, Sverige</span>
+      <div class="footer-links">
+        <a onclick="toast('Villkor kommer snart!','info')">Användarvillkor</a>
+        <a onclick="openLegalModal('cookies')">Cookies</a>
+        <a onclick="openLegalModal('sitemap')">Sitemap</a>
+      </div>
+      <span class="footer-badge">🏢 Grundad av DittFöretag</span>
+    </div>
+  </div>
+</footer>
+
+
+<!-- REVIEW MODAL -->
+<div class="review-ov" id="review-ov" onclick="closeReviewModal(event)">
+  <div class="review-box">
+    <div class="review-head">
+      <div>
+        <h3>✍️ Skriv en recension</h3>
+        <p>Hjälp andra kodare — dela din upplevelse av KodLabbet</p>
+      </div>
+      <button class="review-close" onclick="closeReviewModal()">✕</button>
+    </div>
+    <div class="review-body">
+      <div class="review-field">
+        <label class="review-label">Betyg *</label>
+        <div class="star-picker" id="star-picker">
+          <button class="star-pick" data-val="1" onclick="setStars(1)">⭐</button>
+          <button class="star-pick" data-val="2" onclick="setStars(2)">⭐</button>
+          <button class="star-pick" data-val="3" onclick="setStars(3)">⭐</button>
+          <button class="star-pick" data-val="4" onclick="setStars(4)">⭐</button>
+          <button class="star-pick" data-val="5" onclick="setStars(5)">⭐</button>
+        </div>
+      </div>
+      <div class="review-field">
+        <label class="review-label">Din roll</label>
+        <div class="role-tags" id="role-tags">
+          <button class="role-tag" onclick="pickRole(this)">Nybörjare</button>
+          <button class="role-tag" onclick="pickRole(this)">Student</button>
+          <button class="role-tag" onclick="pickRole(this)">Karriärväxlare</button>
+          <button class="role-tag" onclick="pickRole(this)">Yrkesprogrammerare</button>
+          <button class="role-tag" onclick="pickRole(this)">Lärare</button>
+        </div>
+      </div>
+      <div class="review-field">
+        <label class="review-label">Din recension * <span style="font-weight:400;text-transform:none;letter-spacing:0">(min 30 tecken)</span></label>
+        <textarea class="review-inp" id="review-text" placeholder="Berätta om din upplevelse — vad gillade du? Vad lärde du dig? Vad kan förbättras?" maxlength="500" oninput="reviewTextUpdate()"></textarea>
+        <div class="review-char" id="review-char">0 / 500</div>
+      </div>
+    </div>
+    <div class="review-foot">
+      <button class="review-cancel" onclick="closeReviewModal()">Avbryt</button>
+      <button class="review-submit" id="review-submit" onclick="submitReview()" disabled>Publicera recension →</button>
+    </div>
+  </div>
+</div>
+
+<!-- KONFETTI CANVAS -->
+<canvas id="konfetti-canvas"></canvas>
+
+
+
+<!-- KEYBOARD SHORTCUTS MODAL -->
+<div class="shortcuts-ov" id="shortcuts-ov" onclick="closeShortcuts(event)">
+  <div class="shortcuts-box">
+    <div class="shortcuts-head">
+      <h3>⌨️ Kortkommandon</h3>
+      <button style="background:none;border:none;color:var(--txt3);font-size:1.2rem;cursor:pointer" onclick="closeShortcuts()">✕</button>
+    </div>
+    <div class="shortcuts-body">
+      <div class="sc-group"><div class="sc-group-lbl">Navigering</div>
+        <div class="sc-row"><span class="sc-desc">Hem</span><div class="sc-keys"><kbd>G</kbd><kbd>H</kbd></div></div>
+        <div class="sc-row"><span class="sc-desc">Projekt</span><div class="sc-keys"><kbd>G</kbd><kbd>P</kbd></div></div>
+        <div class="sc-row"><span class="sc-desc">Dashboard</span><div class="sc-keys"><kbd>G</kbd><kbd>D</kbd></div></div>
+        <div class="sc-row"><span class="sc-desc">KodBot</span><div class="sc-keys"><kbd>G</kbd><kbd>K</kbd></div></div>
+        <div class="sc-row"><span class="sc-desc">Priser</span><div class="sc-keys"><kbd>G</kbd><kbd>$</kbd></div></div>
+      </div>
+      <div class="sc-group"><div class="sc-group-lbl">Sökning &amp; Övrigt</div>
+        <div class="sc-row"><span class="sc-desc">Projektsökning</span><div class="sc-keys"><kbd>/</kbd></div></div>
+        <div class="sc-row"><span class="sc-desc">Stäng modal</span><div class="sc-keys"><kbd>Esc</kbd></div></div>
+        <div class="sc-row"><span class="sc-desc">Visa kortkommandon</span><div class="sc-keys"><kbd>?</kbd></div></div>
+        <div class="sc-row"><span class="sc-desc">Växla tema</span><div class="sc-keys"><kbd>T</kbd></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE PAGE -->
+<div class="page" id="page-profile">
+  <div class="cont">
+    <div class="prof-hero" id="prof-hero"></div>
+    <div class="prof-stats-row" id="prof-stats-row"></div>
+    <div class="prof-section">
+      <h3>🏅 Badges <button class="prof-edit-btn" onclick="openEditProfile()">✏️ Redigera profil</button></h3>
+      <div class="prof-badge-grid" id="prof-badge-grid"></div>
+    </div>
+    <div class="prof-section">
+      <h3>📅 Aktivitet (30 dagar)</h3>
+      <div class="prof-activity" id="prof-activity"></div>
+    </div>
+    <div class="prof-section">
+      <h3>✅ Slutförda projekt</h3>
+      <div id="prof-projects"></div>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT PROFILE OVERLAY -->
+<div class="prof-edit-overlay" id="prof-edit-ov" onclick="closeEditProfile(event)">
+  <div class="prof-edit-box">
+    <h3>✏️ Redigera profil</h3>
+    <div style="margin-bottom:0.8rem">
+      <label style="font-family:var(--mono);font-size:0.7rem;color:var(--txt3);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:0.5rem">Välj avatar</label>
+      <div class="avatar-picker" id="avatar-picker">
+        <span class="av-opt" onclick="selectAv(this)">🧑‍💻</span>
+        <span class="av-opt" onclick="selectAv(this)">👩‍💻</span>
+        <span class="av-opt" onclick="selectAv(this)">🧑‍🎓</span>
+        <span class="av-opt" onclick="selectAv(this)">👨‍💻</span>
+        <span class="av-opt" onclick="selectAv(this)">🚀</span>
+        <span class="av-opt" onclick="selectAv(this)">⚡</span>
+        <span class="av-opt" onclick="selectAv(this)">🌟</span>
+        <span class="av-opt" onclick="selectAv(this)">🔥</span>
+      </div>
+    </div>
+    <div class="prof-field"><label>Användarnamn</label><input id="edit-username" type="text" placeholder="Ditt namn"></div>
+    <div class="prof-field"><label>Bio (valfritt)</label><input id="edit-bio" type="text" placeholder="Kort beskrivning om dig"></div>
+    <div
+
+<!-- Separat JS-fil -->
+<script src="/js/app.js"></script>
+</body>
+</html>

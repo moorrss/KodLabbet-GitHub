@@ -1,0 +1,43 @@
+## ── HEMLIGHETER (får ALDRIG laddas upp) ─────────────────
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Secrets.json
+secrets.json
+*.pfx
+*.key
+
+## ── DATABAS (innehåller användardata) ────────────────────
+*.db
+*.db-shm
+*.db-wal
+
+## ── .NET BUILD-OUTPUT ────────────────────────────────────
+bin/
+obj/
+publish/
+
+## ── VISUAL STUDIO / VS CODE ──────────────────────────────
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+# Behåll .vscode/launch.json och tasks.json (inga hemligheter)
+!.vscode/launch.json
+!.vscode/tasks.json
+
+## ── OPERATIVSYSTEM ───────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+Desktop.ini
+
+## ── NODE (om du lägger till frontend-tooling) ────────────
+node_modules/
+npm-debug.log*
+dist/
+
+## ── LOGGFILER ─────────────────────────────────────────────
+*.log
+logs/
