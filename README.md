@@ -14,7 +14,7 @@
 
 KodLabbet är en fullstack-webbapplikation för att lära sig programmering via projekt, AI-guidning och dagliga kodutmaningar. Projektet är byggt som ett personligt sidoprojekt för att demonstrera fullstack-kompetens i .NET-ekosystemet.
 
-**Live demo:** [www.Kodlabbet.com](https://www.Kodlabbet.com) *(kommer snart)*
+**Live demo:** [www.Kodlabbet.com](https://www.Kodlabbet.com) 
 
 ---
 
